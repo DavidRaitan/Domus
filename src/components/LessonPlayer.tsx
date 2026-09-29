@@ -4,6 +4,7 @@ import { isQuestion, type Lesson, type Step, type Track } from '../content/types
 import { type LessonResult } from '../engine/progression'
 import { href } from '../router'
 import { StepView } from './steps/Steps'
+import { Icon } from './Icon'
 
 type Props = {
   track: Track
@@ -42,7 +43,7 @@ export function LessonPlayer({ track, lesson, onFinish }: Props) {
     return (
       <div className="lesson lesson-intro">
         <a className="back" href={exit}>
-          ← {track.title}
+          <Icon name="back" size={16} /> {track.title}
         </a>
         <p className="eyebrow">
           Lesson {lessonIndex + 1} of {track.lessons.length + (track.upcoming?.length ?? 0)}
@@ -75,14 +76,20 @@ export function LessonPlayer({ track, lesson, onFinish }: Props) {
     const continuation = catalog.find((t) => t.series === track.series && t.tier === track.tier + 1)
     return (
       <div className="lesson finish">
-        <div className="finish-mark">{result.trackCompleted ? '🏛️' : '✓'}</div>
+        <div className="finish-mark">
+          <Icon name={result.trackCompleted ? 'columns' : 'check'} size={30} />
+        </div>
         <h1>{result.trackCompleted ? `You finished ${track.title}!` : 'Lesson complete'}</h1>
         <p className="muted">
           {correct} of {questions} right on the first try.
         </p>
         <div className="rewards">
-          <span className="reward">+{result.xpEarned} XP</span>
-          {result.trackCompleted && <span className="reward">+1 🔑 key</span>}
+          <span className="reward">
+            <Icon name="star" size={16} /> +{result.xpEarned} XP
+          </span>
+          {result.trackCompleted && <span className="reward">
+              <Icon name="key" size={16} /> +1 key
+            </span>}
         </div>
         {result.xpEarned === 0 && <p className="muted small">Replays keep your streak alive but don’t earn XP.</p>}
         {(lesson.cards?.length ?? 0) > 0 && (
@@ -127,7 +134,7 @@ export function LessonPlayer({ track, lesson, onFinish }: Props) {
     <div className="lesson">
       <div className="lesson-top">
         <a className="close" href={exit} aria-label="Exit lesson">
-          ✕
+          <Icon name="close" size={20} />
         </a>
         <div className="bar">
           <div className="bar-fill" style={{ width: `${(index / steps.length) * 100}%` }} />

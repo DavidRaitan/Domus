@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { placementTests } from '../content/catalog'
 import { passedPlacement, PLACEMENT_PASS_RATIO, type Progress } from '../engine/progression'
 import { href } from '../router'
+import { Icon } from './Icon'
 
 type Props = { tier: number; progress: Progress; onSubmit: (correct: number, total: number) => void }
 
@@ -26,7 +27,9 @@ export function PlacementTest({ tier, progress, onSubmit }: Props) {
     const passed = passedPlacement(score, questions.length)
     return (
       <div className="lesson finish">
-        <div className="finish-mark">{passed ? '🎓' : '📚'}</div>
+        <div className="finish-mark">
+          <Icon name={passed ? 'cap' : 'book'} size={30} />
+        </div>
         <h1>{passed ? `Tier ${tier} unlocked` : 'Not yet'}</h1>
         <p>
           You got {score} of {questions.length}.{' '}
@@ -46,7 +49,7 @@ export function PlacementTest({ tier, progress, onSubmit }: Props) {
   return (
     <div className="lesson">
       <a className="back" href={href({ page: 'home' })}>
-        ← Back
+        <Icon name="back" size={16} /> Back
       </a>
       <h1>Tier {tier} placement test</h1>
       <p className="muted">

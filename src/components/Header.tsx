@@ -1,5 +1,6 @@
 import { liveStreak, localDay, type Progress } from '../engine/progression'
 import { href } from '../router'
+import { Icon } from './Icon'
 
 export function Header({ progress }: { progress: Progress }) {
   const streak = liveStreak(progress.streak, localDay())
@@ -9,20 +10,26 @@ export function Header({ progress }: { progress: Progress }) {
         <a className="brand" href={href({ page: 'home' })}>
           Domus
         </a>
-        <div className="stats">
-          <span className="stat" title="Day streak">
-            <span aria-hidden>🔥</span> {streak}
+        <nav className="stats" aria-label="Your progress">
+          <span className={`stat ${streak > 0 ? 'stat-live' : ''}`} title="Day streak">
+            <Icon name="flame" size={16} />
+            <span className="stat-num">{streak}</span>
+            <span className="stat-label">day streak</span>
           </span>
           <span className="stat" title="Experience points">
-            <span aria-hidden>⭐</span> {progress.xp} XP
+            <Icon name="star" size={16} />
+            <span className="stat-num">{progress.xp}</span>
+            <span className="stat-label">XP</span>
           </span>
           <span className="stat" title="Unlock keys — spend one to open a track">
-            <span aria-hidden>🔑</span> {progress.pro ? '∞' : progress.keys}
+            <Icon name="key" size={16} />
+            <span className="stat-num">{progress.pro ? '∞' : progress.keys}</span>
+            <span className="stat-label">{progress.keys === 1 && !progress.pro ? 'key' : 'keys'}</span>
           </span>
-          <a className="stat stat-link" href={href({ page: 'settings' })} aria-label="Settings">
-            ⚙
+          <a className="icon-btn" href={href({ page: 'settings' })} aria-label="Settings">
+            <Icon name="gear" size={18} />
           </a>
-        </div>
+        </nav>
       </div>
     </header>
   )

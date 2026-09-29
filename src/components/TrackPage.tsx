@@ -4,6 +4,7 @@ import { isLessonOpen, lessonKey, trackStatus, type Progress } from '../engine/p
 import { href, navigate } from '../router'
 import { statusLabel } from './Home'
 import { Lenses } from './Lenses'
+import { Icon } from './Icon'
 
 type Props = { track: Track; progress: Progress; onUnlock: (t: Track) => void }
 
@@ -14,7 +15,7 @@ export function TrackPage({ track, progress, onUnlock }: Props) {
   return (
     <>
       <a className="back" href={href({ page: 'home' })}>
-        ← All tracks
+        <Icon name="back" size={16} /> All stories
       </a>
       <section className="track-hero">
         <span className="tier-num">Tier {track.tier}</span>
@@ -32,7 +33,7 @@ export function TrackPage({ track, progress, onUnlock }: Props) {
                   navigate({ page: 'track', trackId: track.id })
                 }}
               >
-                {progress.pro || track.free ? 'Start track' : 'Unlock with 🔑'}
+                {progress.pro || track.free ? 'Start track' : 'Unlock with a key'}
               </button>
             ) : (
               <span>Go back to the map to see what you can open.</span>
@@ -47,7 +48,7 @@ export function TrackPage({ track, progress, onUnlock }: Props) {
           const lessonOpen = open && isLessonOpen(track, i, progress)
           return (
             <li key={lesson.id} className={`lesson-row ${done ? 'done' : ''} ${lessonOpen ? '' : 'closed'}`}>
-              <span className="lesson-num">{done ? '✓' : i + 1}</span>
+              <span className="lesson-num">{done ? <Icon name="check" size={16} /> : i + 1}</span>
               <div className="lesson-text">
                 <h3>{lesson.title}</h3>
                 <p className="muted">{lesson.summary}</p>
@@ -58,7 +59,7 @@ export function TrackPage({ track, progress, onUnlock }: Props) {
                 </a>
               ) : (
                 <span className="lock" aria-label="Locked">
-                  🔒
+                  <Icon name="lock" size={16} />
                 </span>
               )}
             </li>
@@ -71,7 +72,7 @@ export function TrackPage({ track, progress, onUnlock }: Props) {
               <h3>{u.title}</h3>
               <p className="muted">{u.summary}</p>
             </div>
-            <span className="pill">Coming soon</span>
+            <span className="tag">Coming soon</span>
           </li>
         ))}
       </ol>

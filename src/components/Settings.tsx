@@ -1,6 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react'
 import { initialProgress, type Progress } from '../engine/progression'
 import { href } from '../router'
+import { Icon } from './Icon'
 
 type Props = { progress: Progress; setProgress: Dispatch<SetStateAction<Progress>> }
 
@@ -8,7 +9,7 @@ export function Settings({ progress, setProgress }: Props) {
   return (
     <div className="lesson">
       <a className="back" href={href({ page: 'home' })}>
-        ← Back
+        <Icon name="back" size={16} /> Back
       </a>
       <h1>Settings</h1>
 

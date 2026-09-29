@@ -3,6 +3,7 @@ import type { Card } from '../content/types'
 import { XP } from '../engine/progression'
 import type { DueCard, Grade } from '../engine/review'
 import { href } from '../router'
+import { Icon } from './Icon'
 
 type Props = {
   initial: DueCard[]
@@ -53,7 +54,9 @@ export function ReviewSession({ initial, onGrade, onFinish }: Props) {
   if (finished) {
     return (
       <div className="lesson finish">
-        <div className="finish-mark">{sessionSize ? '🧠' : '☀️'}</div>
+        <div className="finish-mark">
+          <Icon name={sessionSize ? 'cards' : 'sun'} size={30} />
+        </div>
         <h1>{sessionSize ? 'Review complete' : 'Nothing due today'}</h1>
         {sessionSize > 0 ? (
           <>
@@ -81,7 +84,7 @@ export function ReviewSession({ initial, onGrade, onFinish }: Props) {
     <div className="lesson">
       <div className="lesson-top">
         <a className="close" href={href({ page: 'home' })} aria-label="Exit review">
-          ✕
+          <Icon name="close" size={20} />
         </a>
         <div className="bar">
           <div className="bar-fill" style={{ width: `${(done / (done + queue.length)) * 100}%` }} />
