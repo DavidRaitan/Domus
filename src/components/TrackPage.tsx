@@ -64,6 +64,16 @@ export function TrackPage({ track, progress, onUnlock }: Props) {
             </li>
           )
         })}
+        {track.upcoming?.map((u, i) => (
+          <li key={u.title} className="lesson-row closed upcoming">
+            <span className="lesson-num">{track.lessons.length + i + 1}</span>
+            <div className="lesson-text">
+              <h3>{u.title}</h3>
+              <p className="muted">{u.summary}</p>
+            </div>
+            <span className="pill">Coming soon</span>
+          </li>
+        ))}
       </ol>
     </>
   )

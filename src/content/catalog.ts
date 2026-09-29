@@ -1,6 +1,17 @@
 import type { TestQuestion, Track } from './types'
 import { blackDeath } from './tracks/black-death'
 import { startingPoint } from './tracks/starting-point'
+import { salamis } from './tracks/salamis'
+import { athens } from './tracks/athens'
+import { alexander } from './tracks/alexander'
+import { industrialRevolution } from './tracks/industrial-revolution'
+import { scrambleForAfrica } from './tracks/scramble-for-africa'
+import { decolonization } from './tracks/decolonization'
+import { americanFounding } from './tracks/american-founding'
+import { frenchRevolution } from './tracks/french-revolution'
+import { russianRevolution } from './tracks/russian-revolution'
+import { renaissance } from './tracks/renaissance'
+import { germTheory } from './tracks/germ-theory'
 
 type P = Omit<Track, 'lessons'>
 // Tracks without lessons are planned but not written yet; they show as "coming soon".
@@ -24,12 +35,7 @@ export const catalog: Track[] = [
     tagline: 'Accountants, not poets, invented writing — and with it cities, laws and the state.',
     lenses: ['history', 'economics', 'science', 'geography'],
   }),
-  planned({
-    id: 'salamis', series: 'classical', tier: 1, era: [-490, -479],
-    title: 'Salamis: Greece Against Persia',
-    tagline: 'A few quarrelling Greek cities against the largest empire on earth — decided in a narrow strait.',
-    lenses: ['history', 'geography', 'science', 'politics'],
-  }),
+  salamis,
   planned({
     id: 'buddha-ashoka', series: 'india', tier: 1, era: [-500, -232],
     title: 'From the Buddha to Ashoka',
@@ -73,18 +79,8 @@ export const catalog: Track[] = [
     tagline: 'The biggest biological event since the Ice Age: crops, animals and germs cross the ocean.',
     lenses: ['history', 'geography', 'medicine', 'economics'],
   }),
-  planned({
-    id: 'american-founding', series: 'revolutions', tier: 1, era: [1763, 1789],
-    title: 'The American Founding',
-    tagline: 'A tax dispute becomes a new theory of government.',
-    lenses: ['history', 'politics', 'philosophy', 'economics'],
-  }),
-  planned({
-    id: 'industrial-revolution', series: 'engines', tier: 1, era: [1760, 1850],
-    title: 'The Industrial Revolution',
-    tagline: 'For the first time in history, the energy available to each person starts to climb.',
-    lenses: ['history', 'science', 'economics', 'medicine'],
-  }),
+  americanFounding,
+  industrialRevolution,
   planned({
     id: 'wwi', series: 'wars', tier: 1, era: [1914, 1918],
     title: 'Blueprint for Armageddon: World War I',
@@ -99,12 +95,7 @@ export const catalog: Track[] = [
     tagline: 'Within fifty years, nearly every great power of the eastern Mediterranean fell.',
     lenses: ['history', 'geography', 'science', 'economics'],
   }),
-  planned({
-    id: 'athens', series: 'classical', tier: 2, era: [-431, -399],
-    title: 'Athens: Plague, War and Socrates',
-    tagline: 'The greatest city of its age catches a plague, loses a war, and executes its greatest thinker.',
-    lenses: ['history', 'philosophy', 'medicine', 'politics'],
-  }),
+  athens,
   planned({
     id: 'fall-of-rome', series: 'rome', tier: 2, era: [376, 476],
     title: 'The Fall of Rome in the West',
@@ -123,12 +114,7 @@ export const catalog: Track[] = [
     tagline: 'China could have discovered Europe. It chose not to.',
     lenses: ['history', 'geography', 'science', 'economics'],
   }),
-  planned({
-    id: 'renaissance', series: 'plague', tier: 2, era: [1400, 1513],
-    title: 'Florence After the Plague: The Renaissance',
-    tagline: 'Fewer people, richer survivors — and an explosion of genius.',
-    lenses: ['history', 'science', 'economics', 'philosophy'],
-  }),
+  renaissance,
   planned({
     id: 'constantinople-1453', series: 'steppe', tier: 2, era: [1453, 1453],
     title: 'The Fall of Constantinople',
@@ -147,24 +133,14 @@ export const catalog: Track[] = [
     tagline: 'A few hundred Spaniards, huge native armies and smallpox topple an empire.',
     lenses: ['history', 'medicine', 'geography', 'economics'],
   }),
-  planned({
-    id: 'french-revolution', series: 'revolutions', tier: 2, era: [1789, 1815],
-    title: 'The French Revolution and Napoleon',
-    tagline: 'Liberty, then Terror, then an emperor.',
-    lenses: ['history', 'politics', 'philosophy', 'economics'],
-  }),
+  frenchRevolution,
   planned({
     id: 'civil-war', series: 'america', tier: 2, era: [1861, 1865], after: 'american-founding',
     title: 'The American Civil War',
     tagline: 'A nation fights over whether it can exist half slave and half free.',
     lenses: ['history', 'politics', 'economics', 'science'],
   }),
-  planned({
-    id: 'scramble-for-africa', series: 'engines', tier: 2, era: [1884, 1914],
-    title: 'The Scramble for Africa',
-    tagline: 'Europe carves up a continent at a conference table in Berlin.',
-    lenses: ['history', 'medicine', 'geography', 'politics'],
-  }),
+  scrambleForAfrica,
   planned({
     id: 'wwii', series: 'wars', tier: 2, era: [1939, 1945],
     title: 'World War II and the Holocaust',
@@ -179,12 +155,7 @@ export const catalog: Track[] = [
     tagline: 'A small people loses its land and invents a portable homeland: a text.',
     lenses: ['history', 'religion', 'philosophy', 'politics'],
   }),
-  planned({
-    id: 'alexander', series: 'classical', tier: 3, era: [-336, -323],
-    title: 'Alexander',
-    tagline: 'He conquered the known world by thirty and died at thirty-two.',
-    lenses: ['history', 'geography', 'philosophy', 'science'],
-  }),
+  alexander,
   planned({
     id: 'crusades', series: 'faith', tier: 3, era: [1095, 1291],
     title: 'The Crusades',
@@ -197,30 +168,15 @@ export const catalog: Track[] = [
     tagline: 'From samurai to battleships in fifty years.',
     lenses: ['history', 'politics', 'science', 'economics'],
   }),
-  planned({
-    id: 'germ-theory', series: 'plague', tier: 3, era: [1847, 1928],
-    title: 'From Miasma to Antibiotics',
-    tagline: 'Semmelweis, Snow, Pasteur, Koch and Fleming: how we learned what makes us sick.',
-    lenses: ['medicine', 'science', 'history', 'philosophy'],
-  }),
+  germTheory,
   planned({
     id: 'haiti', series: 'encounters', tier: 3, era: [1791, 1804],
     title: 'Sugar, Slavery and the Haitian Revolution',
     tagline: 'The richest colony on earth becomes the first free Black republic.',
     lenses: ['history', 'economics', 'medicine', 'politics'],
   }),
-  planned({
-    id: 'russian-revolution', series: 'revolutions', tier: 3, era: [1905, 1924],
-    title: 'The Russian Revolution',
-    tagline: 'A sealed train delivers Lenin — and the 20th century follows.',
-    lenses: ['history', 'politics', 'economics', 'philosophy'],
-  }),
-  planned({
-    id: 'decolonization', series: 'engines', tier: 3, era: [1947, 1962],
-    title: 'Midnight’s Children: Decolonisation',
-    tagline: 'Half the world becomes independent within a generation.',
-    lenses: ['history', 'politics', 'geography', 'philosophy'],
-  }),
+  russianRevolution,
+  decolonization,
   planned({
     id: 'nuclear-age', series: 'wars', tier: 3, era: [1942, 1991],
     title: 'Destroyer of Worlds: The Nuclear Age',

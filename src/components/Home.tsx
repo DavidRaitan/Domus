@@ -119,6 +119,7 @@ function TrackCard({ track, progress, onUnlock }: { track: Track; progress: Prog
         {track.lessons.length > 0 && (
           <span className="muted small">
             {open ? `${done}/${track.lessons.length} lessons` : `${track.lessons.length} lessons`}
+            {track.upcoming?.length ? ` · ${track.upcoming.length} coming` : ''}
           </span>
         )}
       </div>

@@ -45,7 +45,7 @@ export function LessonPlayer({ track, lesson, onFinish }: Props) {
           ← {track.title}
         </a>
         <p className="eyebrow">
-          Lesson {lessonIndex + 1} of {track.lessons.length}
+          Lesson {lessonIndex + 1} of {track.lessons.length + (track.upcoming?.length ?? 0)}
         </p>
         <h1>{lesson.title}</h1>
         {lesson.previously && (
@@ -90,7 +90,7 @@ export function LessonPlayer({ track, lesson, onFinish }: Props) {
             {lesson.cards!.length} memory cards added — they’ll come back in your daily review tomorrow.
           </p>
         )}
-        {lesson.teaser && next && (
+        {lesson.teaser && (next || track.upcoming?.length) && (
           <div className="teaser">
             <span className="explain-label">Next time</span>
             <p>{lesson.teaser}</p>
@@ -107,6 +107,8 @@ export function LessonPlayer({ track, lesson, onFinish }: Props) {
             <a className="btn" href={href({ page: 'home' })}>
               Choose your next track
             </a>
+          ) : !next && track.upcoming?.length ? (
+            <span className="muted small">The next lesson, “{track.upcoming[0].title}”, is being written.</span>
           ) : next ? (
             <a className="btn" href={href({ page: 'lesson', trackId: track.id, lessonId: next.id })}>
               Next: {next.title}

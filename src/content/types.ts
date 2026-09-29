@@ -217,6 +217,8 @@ export type Track = {
   after?: string
   /** Empty for tracks whose content isn't written yet. */
   lessons: Lesson[]
+  /** Planned lessons not written yet — shown as "coming soon"; the track can't be completed until they exist. */
+  upcoming?: { title: string; summary: string }[]
 }
 
 export type TestQuestion = {
