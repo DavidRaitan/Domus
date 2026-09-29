@@ -2,7 +2,7 @@ import { useState, type CSSProperties } from 'react'
 import { catalog, TIER_NAMES, tiers } from '../content/catalog'
 import { formatSpan } from '../content/anchors'
 import type { Track } from '../content/types'
-import { lessonKey, localDay, trackStatus, type Progress, type TrackStatus } from '../engine/progression'
+import { continueTarget, lessonKey, localDay, trackStatus, type Progress, type TrackStatus } from '../engine/progression'
 import { dueCards, knownCount } from '../engine/review'
 import { href, navigate } from '../router'
 import { CommitSheet } from './CommitSheet'
@@ -46,6 +46,8 @@ export function Home({ progress, onUnlock }: Props) {
           }}
         />
       )}
+      <ContinueCard progress={progress} />
+
       {total > 0 && (
         <section className="review-banner reveal">
           <div className="review-banner-icon">
@@ -67,7 +69,10 @@ export function Home({ progress, onUnlock }: Props) {
 
       {tiers.map((tier) => {
         const all = catalog.filter((t) => t.tier === tier && !t.free).sort((a, b) => a.era[0] - b.era[0])
-        const ready = all.filter((t) => t.lessons.length > 0)
+        // What you're working on comes first, then what you can open, then the rest.
+        const rank = (t: Track) =>
+          ({ unlocked: 0, available: 1, 'no-keys': 2, completed: 3, locked: 4, 'coming-soon': 5 })[trackStatus(t, progress, catalog).kind]
+        const ready = all.filter((t) => t.lessons.length > 0).sort((a, b) => rank(a) - rank(b))
         const planned = all.filter((t) => t.lessons.length === 0)
         const certified = progress.pro || tier <= progress.certifiedTier
         return (
@@ -222,5 +227,38 @@ function StarterRow({ track, progress, onChoose }: { track: Track; progress: Pro
         </button>
       )}
     </div>
+  )
+}
+
+/** The single most useful button on the page: pick up exactly where you stopped. */
+function ContinueCard({ progress }: { progress: Progress }) {
+  const target = continueTarget(progress, catalog)
+  if (!target) return null
+  const { track, lessonIndex } = target
+  const lesson = track.lessons[lessonIndex]
+  const place = progress.resume[lessonKey(track.id, lesson.id)]
+  const steps = lesson.steps.length + (lesson.cards?.length ?? 0)
+  const doneLessons = track.lessons.filter((l) => progress.completedLessons.includes(lessonKey(track.id, l.id))).length
+  const totalLessons = track.lessons.length + (track.upcoming?.length ?? 0)
+
+  return (
+    <a className="continue-card reveal" href={href({ page: 'lesson', trackId: track.id, lessonId: lesson.id })}>
+      <div className="continue-text">
+        <p className="kicker">{place ? 'Continue where you left off' : 'Up next'}</p>
+        <h2>{lesson.title}</h2>
+        <p className="muted">
+          {track.title} · Lesson {lessonIndex + 1} of {totalLessons}
+          {place ? ` · step ${place.index + 1} of ${steps}` : ''}
+        </p>
+        <div className="continue-bars">
+          <div className="bar" title="Lessons finished in this story">
+            <div className="bar-fill" style={{ width: `${(doneLessons / totalLessons) * 100}%` }} />
+          </div>
+        </div>
+      </div>
+      <span className="btn">
+        {place ? 'Resume' : 'Start lesson'} <Icon name="forward" size={16} />
+      </span>
+    </a>
   )
 }

@@ -193,9 +193,9 @@ export const decolonization: Track = {
             { label: 'Shape', cells: ['One large territory', 'Two wings, about 1,600 km apart'] },
           ],
           blanks: [
-            [1, 1],
-            [2, 0],
-            [3, 1],
+            [1, 1, ['Liaquat Ali Khan, governor-general', 'Lord Mountbatten, prime minister']],
+            [2, 0, ['A one-party socialist republic', 'A union of the princely states only']],
+            [3, 1, ['One narrow coastal strip', 'Two wings, joined by a corridor']],
           ],
           explain:
             'Born a day apart from the same empire, with opposite founding ideas. East Pakistan would break away in 1971 to become Bangladesh.',

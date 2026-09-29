@@ -190,10 +190,10 @@ export const renaissance: Track = {
             { label: 'The cathedral', cells: ['Half-built, no dome', 'Giant dome rising (finished 1436)'] },
           ],
           blanks: [
-            [0, 1],
-            [1, 0],
-            [2, 1],
-            [3, 1],
+            [0, 1, ['About 250,000', 'About 5,000']],
+            [1, 0, ['The Fugger family of Augsburg', 'The Rothschilds (just founded)']],
+            [2, 1, ['Less — bread prices soared', 'The same — wages were frozen by law']],
+            [3, 1, ['Torn down after an earthquake', 'Finished, with a tall spire (1400)']],
           ],
           explain:
             'Well under half the people — yet more money per head, a new banking family, and the largest brick dome ever built going up. That combination is the puzzle this track explores.',

@@ -155,9 +155,9 @@ export const americanFounding: Track = {
             },
           ],
           blanks: [
-            [0, 1],
-            [1, 0],
-            [2, 0],
+            [0, 1, ['Royal governors, with the king’s approval', 'No one — colonists should pay no taxes']],
+            [1, 0, ['Yes — they elect their own MPs', 'No — and they never need to be']],
+            [2, 0, ['To fund a new war against Spain', 'To pay for the king’s new palace']],
           ],
           explain:
             'Both sides argued from the same English tradition — consent to taxation — and reached opposite answers. That’s why neither could simply back down: each thought the constitution was on its side.',

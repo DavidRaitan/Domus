@@ -209,10 +209,10 @@ export const frenchRevolution: Track = {
             },
           ],
           blanks: [
-            [0, 1],
-            [1, 1],
-            [2, 0],
-            [3, 1],
+            [0, 1, ['Napoleonic Wars (1803–15)', 'Thirty Years’ War (1618–48)']],
+            [1, 1, ['Merchants refused new trade duties', 'Paris workers refused a bread tax']],
+            [2, 0, ['Abolish the monarchy at once', 'Bread at a fixed price']],
+            [3, 1, ['Storming of the Tuileries (1792)', 'Execution of the king (1793)']],
           ],
           explain:
             'Both revolutions began as arguments about who pays for war, and who must consent. France’s help for America turned one revolution’s debt into the next one’s spark.',

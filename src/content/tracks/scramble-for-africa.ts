@@ -195,9 +195,9 @@ export const scrambleForAfrica: Track = {
             },
           ],
           blanks: [
-            [0, 1],
-            [1, 0],
-            [2, 2],
+            [0, 1, ['Soldiers running out of food', 'Ships sinking in storms']],
+            [1, 0, ['Wind-powered sailing barge', 'Horse-drawn river barge']],
+            [2, 2, ['Invented 1914', 'Invented 1812']],
           ],
           explain:
             'Medicine, engines and weapons from the industrial world. The Maxim gun was invented in the same year the Berlin Conference opened — the next lesson shows what it did.',

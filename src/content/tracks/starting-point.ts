@@ -443,11 +443,11 @@ export const startingPoint: Track = {
             },
           ],
           blanks: [
-            [0, 1],
-            [1, 2],
-            [2, 0],
-            [2, 2],
-            [3, 1],
+            [0, 1, ['Jordan', 'Niger']],
+            [1, 2, ['Babylon', 'Thebes']],
+            [2, 0, ['Alphabet on papyrus', 'Knotted cords (quipu)']],
+            [2, 2, ['Early Sanskrit letters', 'Picture writing on papyrus']],
+            [3, 1, ['Terracotta army and emperors', 'Stone circles and druids']],
           ],
           explain:
             'Same recipe everywhere — a river, a surplus, a city, writing, rulers — but each cooked it differently. The Indus script still hasn’t been read, so that civilisation remains the most mysterious of the four.',
@@ -695,10 +695,10 @@ export const startingPoint: Track = {
             { label: 'Ended', cells: ['Conquered by Alexander', 'Split into three kingdoms (220 CE)', 'West fell in 476 CE'] },
           ],
           blanks: [
-            [0, 1],
-            [2, 1],
-            [2, 2],
-            [3, 0],
+            [0, 1, ['221 BCE', '618 CE']],
+            [2, 1, ['Buddhist monasteries', 'Elected city councils']],
+            [2, 2, ['Temple priests and oracles', 'Merchant guilds and trade']],
+            [3, 0, ['Conquered by Rome', 'Overrun by the Huns']],
           ],
           explain:
             'Each empire faced the same problem — how do you rule millions of people you’ll never meet? Persia used local rulers, Han China trained officials, Rome used its army, roads and law.',

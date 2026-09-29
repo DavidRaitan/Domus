@@ -5,6 +5,7 @@ import {
   completeReview,
   localDay,
   recordPlacement,
+  saveLessonPlace,
   unlockTrack,
   type Progress,
 } from './engine/progression'
@@ -53,6 +54,8 @@ export default function App() {
             key={`${track.id}/${lesson.id}`}
             track={track}
             lesson={lesson}
+            resume={progress.resume[`${track.id}/${lesson.id}`]}
+            onPlace={(index, correct) => setProgress((p) => saveLessonPlace(p, track.id, lesson.id, index, correct))}
             onFinish={(firstTryCorrect) => {
               const result = completeLesson(progress, track, lesson.id, firstTryCorrect, localDay())
               setProgress(result.progress)

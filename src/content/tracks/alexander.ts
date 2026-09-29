@@ -193,10 +193,10 @@ export const alexander: Track = {
             { label: 'Leader’s age', cells: ['Late thirties', '21'] },
           ],
           blanks: [
-            [0, 1],
-            [2, 1],
-            [3, 1],
-            [4, 1],
+            [0, 1, ['Africa → Asia', 'Europe → Africa']],
+            [2, 1, ['About 150,000–200,000', 'About 5,000–8,000']],
+            [3, 1, ['Spread Greek democracy to Asia', 'Seize Egypt’s grain supply']],
+            [4, 1, ['17', '30']],
           ],
           explain:
             'Same water, opposite direction, a far smaller army — and a much younger king. Xerxes brought overwhelming numbers. Alexander brought a better-drilled machine.',

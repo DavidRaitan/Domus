@@ -313,6 +313,17 @@ strong { color: var(--ink); font-weight: 600; }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes sheet-in { from { opacity: 0; transform: translateY(16px) scale(0.98); } to { opacity: 1; transform: none; } }
 
+/* Continue card: the page's most important action, first */
+.continue-card { display: flex; align-items: center; gap: 24px; padding: 24px 28px; margin-bottom: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); text-decoration: none; color: inherit; transition: box-shadow 200ms, border-color 200ms; }
+.continue-card:hover { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.045); border-color: var(--line-strong); }
+.continue-card:active { transform: scale(0.995); }
+.continue-text { flex: 1; min-width: 0; }
+.continue-text h2 { margin: 0 0 4px; }
+.continue-text p.muted { margin: 0 0 12px; font-size: 0.925rem; }
+.continue-bars .bar { max-width: 320px; }
+.btn-lg { padding: 13px 20px; font-size: 1rem; margin-top: 20px; }
+.in-progress { margin: 6px 0 0 !important; font-size: 0.8rem !important; color: var(--yellow); font-weight: 500; }
+
 /* ── Track page ─────────────────────────────────────────────────────────── */
 .back { display: inline-flex; align-items: center; gap: 6px; margin: 32px 0 20px; color: var(--muted); text-decoration: none; font-size: 0.9rem; transition: color 150ms; }
 .back:hover { color: var(--ink); }
@@ -334,7 +345,16 @@ strong { color: var(--ink); font-weight: 600; }
 
 /* ── Lesson player ──────────────────────────────────────────────────────── */
 .lesson { max-width: 680px; margin: 0 auto; }
-.lesson-top { display: flex; align-items: center; gap: 16px; margin: 28px 0 28px; }
+.lesson-top { display: flex; align-items: flex-start; gap: 16px; margin: 4px 0 28px; }
+.lesson-progress { flex: 1; min-width: 0; padding-top: 12px; }
+.bar-lesson { position: relative; height: 6px; overflow: visible; }
+.bar-lesson .bar-fill { position: relative; z-index: 1; }
+.bar-mark { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--line-strong); border-radius: 1px; }
+.lesson-meta { display: flex; justify-content: space-between; gap: 12px; margin-top: 8px; font: 0.75rem var(--mono); color: var(--muted); letter-spacing: 0.02em; }
+.resume-card { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 20px; padding: 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+.resume-card > div:first-child { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 6px; }
+.resume-card .muted { font-size: 0.875rem; }
+.resume-actions { display: flex; gap: 8px; }
 .close { display: grid; place-items: center; width: 32px; height: 32px; margin-left: -6px; border-radius: var(--radius-sm); color: var(--muted); transition: background 150ms, color 150ms; }
 .close:hover { background: var(--surface-2); color: var(--ink); }
 .eyebrow { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
@@ -531,6 +551,7 @@ input[type='range'] { width: 100%; accent-color: var(--ink); height: 28px; }
   .planned li { flex-direction: column; gap: 2px; }
   .review-banner { flex-wrap: wrap; margin-bottom: 48px; }
   .map-label { font-size: 22px; }
+  .continue-card { flex-direction: column; align-items: stretch; gap: 16px; padding: 20px; }
   .sheet-scrim { place-items: end center; padding: 0; }
   .sheet { border-radius: 16px 16px 0 0; padding: 24px 20px 28px; max-height: 88vh; }
   .sheet-actions { flex-direction: column-reverse; }

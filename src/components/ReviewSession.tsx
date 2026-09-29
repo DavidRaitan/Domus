@@ -4,6 +4,7 @@ import { XP } from '../engine/progression'
 import type { DueCard, Grade } from '../engine/review'
 import { href } from '../router'
 import { Icon } from './Icon'
+import { shuffle } from '../shuffle'
 
 type Props = {
   initial: DueCard[]
@@ -102,7 +103,7 @@ function ReviewCard({ card, onAnswer }: { card: Card; onAnswer: (g: Grade) => vo
   const [revealed, setRevealed] = useState(false)
   const [picked, setPicked] = useState<string | null>(null)
   const options = useMemo(
-    () => (card.choices ? [card.back, ...card.choices].sort(() => Math.random() - 0.5) : null),
+    () => (card.choices ? shuffle([card.back, ...card.choices]) : null),
     [card],
   )
   const right = picked === card.back

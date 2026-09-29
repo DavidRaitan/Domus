@@ -13,6 +13,7 @@ import { LaborMarket } from '../widgets/LaborMarket'
 import { PlagueMap } from '../widgets/PlagueMap'
 import { QuestionShell } from './QuestionShell'
 import { CardQuiz, Compare, Explain, Orient, Predict, Recap, Timeline } from './RichSteps'
+import { shuffle } from '../../shuffle'
 
 /** `correct` is set for questions, undefined for story and interactive steps. */
 export type OnContinue = (correct?: boolean) => void
@@ -67,8 +68,18 @@ function Story({ step, onContinue }: { step: StoryStep; onContinue: OnContinue }
   )
 }
 
+/**
+ * Display order for options. Authors tend to put the right answer in the same slot, so shuffle —
+ * except numeric scales ("About 10%", "About 50%"…), which read better in their written order.
+ */
+export function displayOrder(options: string[]): number[] {
+  const idx = options.map((_, i) => i)
+  return options.every((o) => /\d/.test(o)) ? idx : shuffle(idx)
+}
+
 function Choice({ step, onContinue }: { step: ChoiceStep; onContinue: OnContinue }) {
   const [picked, setPicked] = useState<number | null>(null)
+  const order = useMemo(() => displayOrder(step.options), [step])
   return (
     <>
       <Lenses lenses={step.lenses} />
@@ -81,14 +92,14 @@ function Choice({ step, onContinue }: { step: ChoiceStep; onContinue: OnContinue
       >
         {(checked) => (
           <div className="options">
-            {step.options.map((opt, i) => {
+            {order.map((i) => {
               let cls = 'option'
               if (picked === i) cls += ' selected'
               if (checked && i === step.answer) cls += ' right'
               if (checked && picked === i && i !== step.answer) cls += ' wrong'
               return (
                 <button key={i} className={cls} disabled={checked} onClick={() => setPicked(i)}>
-                  {opt}
+                  {step.options[i]}
                 </button>
               )
             })}
@@ -103,7 +114,7 @@ function shuffled<T>(items: T[]): T[] {
   if (items.length < 2) return items
   let out: T[]
   do {
-    out = [...items].sort(() => Math.random() - 0.5)
+    out = shuffle(items)
   } while (out.every((x, i) => x === items[i]))
   return out
 }

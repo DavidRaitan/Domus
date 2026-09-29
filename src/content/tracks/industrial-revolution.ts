@@ -194,10 +194,10 @@ export const industrialRevolution: Track = {
             },
           ],
           blanks: [
-            [0, 0],
-            [1, 0],
-            [1, 2],
-            [2, 2],
+            [0, 0, ['Lowest in Europe', 'About the same as China']],
+            [1, 0, ['Mostly peat and firewood', 'Imported whale oil and timber']],
+            [1, 2, ['Cheap coal right beside the delta', 'Abundant oil wells nearby']],
+            [2, 2, ['Yes — labour was costly', 'Yes — coal was cheap there']],
           ],
           explain:
             'Same machines, different prices, different answers. Allen’s point is that inventions spread where they save money — and in the 1700s that was Britain.',

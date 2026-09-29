@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest'
 import type { Track } from '../content/types'
 import {
   completeLesson,
+  continueTarget,
+  saveLessonPlace,
   initialProgress,
   liveStreak,
   nextStreak,
@@ -156,5 +158,21 @@ describe('partly written tracks', () => {
     const r = completeLesson(unlockTrack(initialProgress(), partial, [partial]), partial, 'a', 0, '2026-09-29')
     expect(r.trackCompleted).toBe(true)
     expect(r.progress.keys).toBe(1)
+  })
+})
+
+describe('resuming', () => {
+  it('remembers your place in a lesson and clears it when the lesson is done', () => {
+    let p = saveLessonPlace(unlockTrack(initialProgress(), plague1, catalog), 'plague-1', 'a', 7, 3)
+    expect(p.resume['plague-1/a']).toEqual({ index: 7, correct: 3 })
+    expect(continueTarget(p, catalog)).toEqual({ track: plague1, lessonIndex: 0 })
+    p = completeLesson(p, plague1, 'a', 3, '2026-09-29').progress
+    expect(p.resume['plague-1/a']).toBeUndefined()
+    expect(continueTarget(p, catalog)).toEqual({ track: plague1, lessonIndex: 1 })
+  })
+
+  it('has nothing to continue before you start, or after you finish everything', () => {
+    expect(continueTarget(initialProgress(), catalog)).toBeNull()
+    expect(continueTarget(finish(unlockTrack(initialProgress(), plague1, catalog)), catalog)).toBeNull()
   })
 })

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { catalog } from '../content/catalog'
 import { isQuestion, type Lesson, type Step, type Track } from '../content/types'
 import { type LessonResult } from '../engine/progression'
@@ -9,18 +9,32 @@ import { Icon } from './Icon'
 type Props = {
   track: Track
   lesson: Lesson
+  /** Where the learner stopped last time, if they left mid-lesson. */
+  resume?: { index: number; correct: number }
+  /** Called as the learner moves on, so leaving never loses their place. */
+  onPlace: (index: number, correct: number) => void
   onFinish: (firstTryCorrect: number) => LessonResult
 }
 
-export function LessonPlayer({ track, lesson, onFinish }: Props) {
+// Rough seconds per step, used for the "minutes left" estimate.
+const SECONDS: Record<Step['type'], number> = {
+  orient: 60, story: 30, explain: 35, predict: 25, choice: 30, order: 45, match: 50, estimate: 30,
+  timeline: 30, compare: 70, recap: 90, interactive: 60, card: 12,
+}
+
+const minutesFor = (steps: Step[]) => Math.max(1, Math.round(steps.reduce((t, s) => t + SECONDS[s.type], 0) / 60))
+
+export function LessonPlayer({ track, lesson, resume, onPlace, onFinish }: Props) {
   // The lesson's memory cards are quizzed at the end — the first, same-day retrieval.
   const steps: Step[] = useMemo(
     () => [...lesson.steps, ...(lesson.cards ?? []).map((card) => ({ type: 'card' as const, card }))],
     [lesson],
   )
-  const [started, setStarted] = useState(!lesson.question)
+  const canResume = !!resume && resume.index > 0 && resume.index < steps.length
+  const [started, setStarted] = useState(!lesson.question && !canResume)
   const [index, setIndex] = useState(0)
   const [correct, setCorrect] = useState(0)
+  const quizStart = lesson.steps.length
   const [result, setResult] = useState<LessonResult | null>(null)
 
   const lessonIndex = track.lessons.findIndex((l) => l.id === lesson.id)
@@ -31,6 +45,7 @@ export function LessonPlayer({ track, lesson, onFinish }: Props) {
     setCorrect(total)
     if (index + 1 < steps.length) {
       setIndex(index + 1)
+      onPlace(index + 1, total)
       window.scrollTo(0, 0)
     } else {
       // Finish from the click handler (not an effect) so progress is recorded exactly once.
@@ -38,6 +53,27 @@ export function LessonPlayer({ track, lesson, onFinish }: Props) {
       window.scrollTo(0, 0)
     }
   }
+
+  // Keyboard: Enter/Space presses the step's main button; 1–9 pick an option.
+  useEffect(() => {
+    if (!started || result) return
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target instanceof HTMLElement ? e.target : null
+      if (t?.closest('textarea, select, input') || e.metaKey || e.ctrlKey || e.altKey) return
+      const stepEl = document.querySelector('.step')
+      if (!stepEl) return
+      if (/^[1-9]$/.test(e.key)) {
+        const opts = stepEl.querySelectorAll<HTMLButtonElement>('.options .option:not(:disabled)')
+        opts[Number(e.key) - 1]?.click()
+      } else if (e.key === 'Enter' && !(t instanceof HTMLButtonElement)) {
+        const buttons = [...stepEl.querySelectorAll<HTMLButtonElement>('.btn:not(:disabled):not(.btn-ghost)')]
+        buttons.at(-1)?.click()
+        e.preventDefault()
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [started, result])
 
   if (!started) {
     return (
@@ -59,13 +95,49 @@ export function LessonPlayer({ track, lesson, onFinish }: Props) {
           <p>{lesson.question}</p>
         </div>
         <p className="muted small">
-          About {Math.max(5, Math.round(steps.length * 0.7))} minutes · {steps.filter(isQuestion).length} questions
+          About {minutesFor(steps)} minutes · {steps.length} steps · {steps.filter(isQuestion).length} questions
         </p>
-        <div className="step-footer">
-          <button className="btn" onClick={() => setStarted(true)} autoFocus>
-            Begin
-          </button>
-        </div>
+        {canResume ? (
+          <div className="resume-card">
+            <div>
+              <strong>You’re part-way through</strong>
+              <span className="muted">
+                Step {resume!.index + 1} of {steps.length} · about {minutesFor(steps.slice(resume!.index))} min left
+              </span>
+              <div className="bar">
+                <div className="bar-fill" style={{ width: `${(resume!.index / steps.length) * 100}%` }} />
+              </div>
+            </div>
+            <div className="resume-actions">
+              <button
+                className="btn btn-ghost"
+                onClick={() => {
+                  onPlace(0, 0)
+                  setStarted(true)
+                }}
+              >
+                Start over
+              </button>
+              <button
+                className="btn"
+                autoFocus
+                onClick={() => {
+                  setIndex(resume!.index)
+                  setCorrect(resume!.correct)
+                  setStarted(true)
+                }}
+              >
+                Resume <Icon name="forward" size={16} />
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="step-footer">
+            <button className="btn" onClick={() => setStarted(true)} autoFocus>
+              Begin
+            </button>
+          </div>
+        )}
       </div>
     )
   }
@@ -133,11 +205,20 @@ export function LessonPlayer({ track, lesson, onFinish }: Props) {
   return (
     <div className="lesson">
       <div className="lesson-top">
-        <a className="close" href={exit} aria-label="Exit lesson">
+        <a className="close" href={exit} aria-label="Exit lesson — your place is saved" title="Exit — your place is saved">
           <Icon name="close" size={20} />
         </a>
-        <div className="bar">
-          <div className="bar-fill" style={{ width: `${(index / steps.length) * 100}%` }} />
+        <div className="lesson-progress">
+          <div className="bar bar-lesson" aria-hidden>
+            <div className="bar-fill" style={{ width: `${(index / steps.length) * 100}%` }} />
+            {quizStart < steps.length && <span className="bar-mark" style={{ left: `${(quizStart / steps.length) * 100}%` }} />}
+          </div>
+          <div className="lesson-meta">
+            <span>
+              {index < quizStart ? 'The story' : 'Lock it in'} · Step {index + 1} of {steps.length}
+            </span>
+            <span>About {minutesFor(steps.slice(index))} min left</span>
+          </div>
         </div>
       </div>
       <p className="eyebrow">{lesson.title}</p>

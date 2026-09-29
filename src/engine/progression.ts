@@ -15,6 +15,10 @@ export type Progress = {
   streak: { count: number; lastDay: string | null }
   /** Spaced-repetition state per memory card id. */
   cards: Record<string, CardState>
+  /** Where you stopped inside unfinished lessons, keyed by lessonKey. */
+  resume: Record<string, { index: number; correct: number }>
+  /** The lesson you touched most recently — the home screen's "continue" target. */
+  last: { trackId: string; lessonId: string } | null
 }
 
 export const initialProgress = (): Progress => ({
@@ -27,6 +31,8 @@ export const initialProgress = (): Progress => ({
   pro: false,
   streak: { count: 0, lastDay: null },
   cards: {},
+  resume: {},
+  last: null,
 })
 
 export const XP = {
@@ -122,6 +128,8 @@ export function completeLesson(
       keys: trackCompleted ? p.keys + 1 : p.keys,
       streak: nextStreak(p.streak, today),
       cards: introduceCards(p.cards, track.lessons.find((l) => l.id === lessonId)?.cards ?? [], today),
+      resume: withoutKey(p.resume, key),
+      last: { trackId: track.id, lessonId },
     },
   }
 }
@@ -139,6 +147,44 @@ export function completeReview(
     xp: p.xp + reviewed * XP.reviewCard,
     streak: reviewed > 0 ? nextStreak(p.streak, today) : p.streak,
   }
+}
+
+/** Remember where the learner is inside a lesson so they can pick up there. */
+export function saveLessonPlace(p: Progress, trackId: string, lessonId: string, index: number, correct: number): Progress {
+  return {
+    ...p,
+    resume: { ...p.resume, [lessonKey(trackId, lessonId)]: { index, correct } },
+    last: { trackId, lessonId },
+  }
+}
+
+function withoutKey<T>(obj: Record<string, T>, key: string): Record<string, T> {
+  const { [key]: _drop, ...rest } = obj
+  return rest
+}
+
+/**
+ * Where "continue" should take you: the lesson you were last in if it's unfinished,
+ * otherwise the next unfinished lesson of that track, otherwise of any track you've opened.
+ */
+export function continueTarget(p: Progress, catalog: Track[]): { track: Track; lessonIndex: number } | null {
+  const nextOpen = (track: Track) => track.lessons.findIndex((l) => !p.completedLessons.includes(lessonKey(track.id, l.id)))
+  if (p.last) {
+    const track = catalog.find((t) => t.id === p.last!.trackId)
+    if (track) {
+      const i = track.lessons.findIndex((l) => l.id === p.last!.lessonId)
+      if (i >= 0 && !p.completedLessons.includes(lessonKey(track.id, track.lessons[i].id))) return { track, lessonIndex: i }
+      const n = nextOpen(track)
+      if (n >= 0) return { track, lessonIndex: n }
+    }
+  }
+  for (const id of p.unlockedTracks) {
+    const track = catalog.find((t) => t.id === id)
+    if (!track || p.completedTracks.includes(id)) continue
+    const n = nextOpen(track)
+    if (n >= 0) return { track, lessonIndex: n }
+  }
+  return null
 }
 
 export function passedPlacement(correct: number, total: number): boolean {

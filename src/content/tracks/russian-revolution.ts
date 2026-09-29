@@ -206,10 +206,10 @@ export const russianRevolution: Track = {
             },
           ],
           blanks: [
-            [0, 2],
-            [1, 0],
-            [1, 2],
-            [2, 1],
+            [0, 2, ['Losing war with Germany', 'Debt from the Crimean War']],
+            [1, 0, ['A tax on imported tea', 'A shooting in Boston']],
+            [1, 2, ['The tsar is assassinated', 'A new tax on vodka']],
+            [2, 1, ['The king is beheaded', 'Napoleon takes power']],
           ],
           explain:
             'Again and again, war strains a state’s money and its people’s patience, and one shocking moment turns grievances into revolution. In all three, the first concessions did not end the story.',

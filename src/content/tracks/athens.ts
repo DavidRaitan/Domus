@@ -192,10 +192,10 @@ export const athens: Track = {
             { label: 'Alliance', cells: ['Delian League, now an empire', 'Peloponnesian League'] },
           ],
           blanks: [
-            [0, 1],
-            [1, 0],
-            [2, 1],
-            [3, 0],
+            [0, 1, ['A single hereditary king ruling alone', 'Magistrates chosen by lot']],
+            [1, 0, ['Elite cavalry, the best in Greece', 'A land army of 100,000 hoplites']],
+            [2, 1, ['Spartan citizens farming their own plots', 'Hired foreign labourers paid in silver']],
+            [3, 0, ['Achaean League', 'Boeotian League, led by Thebes']],
           ],
           explain:
             'A whale against an elephant: each was strongest exactly where the other was weakest. Neither could easily reach the other’s heart — which is why the war lasted 27 years.',

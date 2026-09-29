@@ -120,13 +120,18 @@ export type TimelineStep = {
   lenses?: Lens[]
 }
 
-/** Side-by-side comparison. Cells in `blanks` are hidden and filled from a shuffled pool. */
+/**
+ * Side-by-side comparison. Each blank is hidden and answered from its own options: the true cell
+ * plus the blank's own plausible wrong answers — so solving one blank never gives away another.
+ */
+export type CompareBlank = [row: number, col: number, wrong: string[]]
+
 export type CompareStep = {
   type: 'compare'
   prompt: string
   columns: string[]
   rows: { label: string; cells: string[] }[]
-  blanks: [row: number, col: number][]
+  blanks: CompareBlank[]
   explain: string
   lenses?: Lens[]
 }

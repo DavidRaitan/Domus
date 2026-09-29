@@ -14,6 +14,8 @@ export function TrackPage({ track, progress, onUnlock }: Props) {
   const status = trackStatus(track, progress, catalog)
   const open = status.kind === 'unlocked' || status.kind === 'completed'
   const [asking, setAsking] = useState(false)
+  const nextIndex = track.lessons.findIndex((l) => !progress.completedLessons.includes(lessonKey(track.id, l.id)))
+  const nextLesson = nextIndex >= 0 ? track.lessons[nextIndex] : null
   const start = () => {
     onUnlock(track)
     setAsking(false)
@@ -46,6 +48,12 @@ export function TrackPage({ track, progress, onUnlock }: Props) {
             )}
           </div>
         )}
+        {open && nextLesson && (
+          <a className="btn btn-lg" href={href({ page: 'lesson', trackId: track.id, lessonId: nextLesson.id })}>
+            {progress.resume[lessonKey(track.id, nextLesson.id)] ? 'Resume' : 'Start'} lesson {nextIndex + 1}: {nextLesson.title}
+            <Icon name="forward" size={16} />
+          </a>
+        )}
       </section>
 
       <ol className="lesson-list">
@@ -58,10 +66,16 @@ export function TrackPage({ track, progress, onUnlock }: Props) {
               <div className="lesson-text">
                 <h3>{lesson.title}</h3>
                 <p className="muted">{lesson.summary}</p>
+                {!done && progress.resume[lessonKey(track.id, lesson.id)] && (
+                  <p className="in-progress">
+                    In progress · step {progress.resume[lessonKey(track.id, lesson.id)].index + 1} of{' '}
+                    {lesson.steps.length + (lesson.cards?.length ?? 0)}
+                  </p>
+                )}
               </div>
               {lessonOpen ? (
                 <a className="btn btn-sm" href={href({ page: 'lesson', trackId: track.id, lessonId: lesson.id })}>
-                  {done ? 'Replay' : 'Start'}
+                  {done ? 'Replay' : progress.resume[lessonKey(track.id, lesson.id)] ? 'Resume' : 'Start'}
                 </a>
               ) : (
                 <span className="lock" aria-label="Locked">

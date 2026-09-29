@@ -752,10 +752,10 @@ export const blackDeath: Track = {
             },
           ],
           blanks: [
-            [0, 1],
-            [1, 0],
-            [1, 2],
-            [2, 1],
+            [0, 1, ['Witches cursing the city', 'Punishment for a bad king']],
+            [1, 0, ['Expelling foreigners from the city', 'Burning the houses of the sick']],
+            [1, 2, ['Bleed the sick; burn herbs', 'Pray and accept fate']],
+            [2, 1, ['Law protects minorities', 'Faith defeats disease']],
           ],
           explain:
             'The same disease, three very different reactions. What people believed about the cause decided what they did — for good or evil.',
@@ -1115,11 +1115,11 @@ export const blackDeath: Track = {
             },
           ],
           blanks: [
-            [0, 1],
-            [1, 1],
-            [1, 3],
-            [2, 2],
-            [3, 1],
+            [0, 1, ['Virus spread by mosquitoes', 'Poisoned water supply']],
+            [1, 1, ['~5–10% of Europe', '~80–90% of Europe']],
+            [1, 3, ['~5% of the world', '~0.01% of the world']],
+            [2, 2, ['Contaminated drinking water', 'Rats on grain ships']],
+            [3, 1, ['Boiling drinking water', 'Inoculation with cowpox']],
           ],
           explain:
             'The deadliest pandemics struck before anyone knew the cause. Each new tool — quarantine, germ theory, antibiotics, vaccines — cut the share who died.',

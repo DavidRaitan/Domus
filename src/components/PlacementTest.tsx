@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { placementTests } from '../content/catalog'
 import { passedPlacement, PLACEMENT_PASS_RATIO, type Progress } from '../engine/progression'
 import { href } from '../router'
 import { Icon } from './Icon'
+import { displayOrder } from './steps/Steps'
 
 type Props = { tier: number; progress: Progress; onSubmit: (correct: number, total: number) => void }
 
@@ -10,6 +11,7 @@ export function PlacementTest({ tier, progress, onSubmit }: Props) {
   const questions = placementTests[tier] ?? []
   const [answers, setAnswers] = useState<(number | null)[]>(() => questions.map(() => null))
   const [score, setScore] = useState<number | null>(null)
+  const orders = useMemo(() => questions.map((q) => displayOrder(q.options)), [questions])
   const alreadyCertified = tier <= progress.certifiedTier
 
   if (questions.length === 0) {
@@ -62,13 +64,13 @@ export function PlacementTest({ tier, progress, onSubmit }: Props) {
           <li key={qi} className="test-q">
             <p className="test-prompt">{q.prompt}</p>
             <div className="options">
-              {q.options.map((opt, oi) => (
+              {orders[qi].map((oi) => (
                 <button
                   key={oi}
                   className={`option ${answers[qi] === oi ? 'selected' : ''}`}
                   onClick={() => setAnswers((prev) => prev.map((a, i) => (i === qi ? oi : a)))}
                 >
-                  {opt}
+                  {q.options[oi]}
                 </button>
               ))}
             </div>

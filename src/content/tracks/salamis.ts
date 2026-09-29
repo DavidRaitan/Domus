@@ -191,10 +191,10 @@ export const salamis: Track = {
             { label: 'Main weapon in 480', cells: ['A vast army, carried over bridges', 'A brand-new fleet of triremes'] },
           ],
           blanks: [
-            [0, 1],
-            [1, 0],
-            [2, 1],
-            [3, 1],
+            [0, 1, ['About 50,000 km² (Attica)', 'About 250 km² (the city)']],
+            [1, 0, ['A council of satraps voting', 'Magi reading the omens']],
+            [2, 1, ['Gold from trade with Egypt', 'Loans from Sparta’s treasury']],
+            [3, 1, ['Heavy cavalry from Thessaly', 'Siege towers and catapults']],
           ],
           explain:
             'Persia had more of everything — land, people, money. Athens had one thing it had chosen for itself: a fleet paid for with its own silver, by its own vote.',

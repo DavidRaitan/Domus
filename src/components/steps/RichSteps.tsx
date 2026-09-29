@@ -14,6 +14,7 @@ import { GeoMap } from '../widgets/GeoMap'
 import { WorldTimeline } from '../widgets/WorldTimeline'
 import { QuestionShell } from './QuestionShell'
 import type { OnContinue } from './Steps'
+import { shuffle } from '../../shuffle'
 
 function ContinueFooter({ onContinue, label = 'Continue' }: { onContinue: OnContinue; label?: string }) {
   return (
@@ -211,10 +212,14 @@ export function Timeline({ step, onContinue }: { step: TimelineStep; onContinue:
 export function Compare({ step, onContinue }: { step: CompareStep; onContinue: OnContinue }) {
   const key = (r: number, c: number) => `${r}:${c}`
   const isBlank = (r: number, c: number) => step.blanks.some(([br, bc]) => br === r && bc === c)
-  const pool = useMemo(
-    () => [...new Set(step.blanks.map(([r, c]) => step.rows[r].cells[c]))].sort(() => Math.random() - 0.5),
-    [step],
-  )
+  // Each blank has its own options (true cell + its own wrong answers), shuffled once per visit,
+  // so filling one blank never narrows the choices for another.
+  const options = useMemo(() => {
+    const out: Record<string, string[]> = {}
+    for (const [r, c, wrong] of step.blanks)
+      out[key(r, c)] = shuffle([step.rows[r].cells[c], ...wrong])
+    return out
+  }, [step])
   const [filled, setFilled] = useState<Record<string, string>>({})
 
   return (
@@ -261,7 +266,7 @@ export function Compare({ step, onContinue }: { step: CompareStep; onContinue: O
                               aria-label={`${row.label} — ${step.columns[c]}`}
                             >
                               <option value="">Choose…</option>
-                              {pool.map((p) => (
+                              {options[key(r, c)].map((p) => (
                                 <option key={p} value={p}>
                                   {p}
                                 </option>
@@ -342,7 +347,7 @@ export function Recap({ step, onContinue }: { step: RecapStep; onContinue: OnCon
 export function CardQuiz({ step, onContinue }: { step: CardStep; onContinue: OnContinue }) {
   const { card } = step
   const options = useMemo(
-    () => (card.choices ? [card.back, ...card.choices].sort(() => Math.random() - 0.5) : null),
+    () => (card.choices ? shuffle([card.back, ...card.choices]) : null),
     [card],
   )
   const [picked, setPicked] = useState<string | null>(null)

@@ -126,10 +126,10 @@ export const germTheory: Track = {
             },
           ],
           blanks: [
-            [1, 0],
-            [1, 1],
-            [2, 0],
-            [2, 2],
+            [1, 0, ['Rarely — autopsies were banned', 'Never — only nurses did them']],
+            [1, 1, ['Yes, every morning', 'Sometimes, after lectures']],
+            [2, 0, ['About 1 in 100 (1841–46)', 'About 40 in 100 (1841–46)']],
+            [2, 2, ['Very common', 'Higher than either clinic']],
           ],
           explain:
             'Women who gave birth on the way to hospital rarely caught the fever — a test nobody had planned. Only one thing lined up with the deaths: hands that came from corpses.',
