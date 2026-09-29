@@ -32,7 +32,7 @@ export function TrackPage({ track, progress, onUnlock }: Props) {
                   navigate({ page: 'track', trackId: track.id })
                 }}
               >
-                {progress.pro ? 'Start track' : 'Unlock with 🔑'}
+                {progress.pro || track.free ? 'Start track' : 'Unlock with 🔑'}
               </button>
             ) : (
               <span>Go back to the map to see what you can open.</span>

@@ -18,7 +18,7 @@ export const ANCHORS: { year: number; label: string }[] = [
 
 export function formatYear(y: number): string {
   const r = Math.round(y)
-  if (r < 0) return `${-r} BCE`
+  if (r < 0) return `${(-r).toLocaleString('en-US')} BCE`
   if (r < 1000) return `${r} CE`
   return String(r)
 }
@@ -26,8 +26,8 @@ export function formatYear(y: number): string {
 export function formatSpan(from: number, to: number): string {
   if (from === to) return formatYear(from)
   const [a, b] = [Math.round(from), Math.round(to)]
-  if (b < 0) return `${-a}–${-b} BCE`
-  if (a < 0) return `${-a} BCE–${b} CE`
+  if (b < 0) return `${(-a).toLocaleString('en-US')}–${(-b).toLocaleString('en-US')} BCE`
+  if (a < 0) return `${formatYear(a)}–${formatYear(b)}`
   return b < 1000 ? `${a}–${b} CE` : `${a}–${b}`
 }
 

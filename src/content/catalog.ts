@@ -1,5 +1,6 @@
 import type { TestQuestion, Track } from './types'
 import { blackDeath } from './tracks/black-death'
+import { startingPoint } from './tracks/starting-point'
 
 type P = Omit<Track, 'lessons'>
 // Tracks without lessons are planned but not written yet; they show as "coming soon".
@@ -13,6 +14,9 @@ const planned = (t: P): Track => ({ ...t, lessons: [] })
  * Crash Course, and narrative podcasts (Hardcore History, Revolutions, Fall of Civilizations).
  */
 export const catalog: Track[] = [
+  // ── Start here: free orientation to all of history ─────────────────────────
+  startingPoint,
+
   // ── Tier 1: pick any one to start ──────────────────────────────────────────
   planned({
     id: 'uruk', series: 'cradles', tier: 1, era: [-3500, -1750],

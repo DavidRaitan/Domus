@@ -145,7 +145,7 @@ function TrackCard({ track, progress, onUnlock }: { track: Track; progress: Prog
               navigate({ page: 'track', trackId: track.id })
             }}
           >
-            {progress.pro ? 'Start' : 'Unlock with 🔑'}
+            {progress.pro || track.free ? 'Start' : 'Unlock with 🔑'}
           </button>
         )}
         {status.kind === 'no-keys' && <span className="muted small">Finish your current track to earn a key.</span>}
