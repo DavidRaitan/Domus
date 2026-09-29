@@ -110,7 +110,7 @@ p { margin: 0 0 0.85em; }
 a { color: var(--ink); }
 strong { color: var(--ink); font-weight: 600; }
 
-.container { max-width: 1080px; margin: 0 auto; padding: 0 20px 120px; }
+.container { max-width: 1080px; margin: 0 auto; padding: 48px 20px 120px; }
 .muted { color: var(--muted); }
 .small { font-size: 0.875rem; }
 .mono { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.02em; }
@@ -228,7 +228,7 @@ strong { color: var(--ink); font-weight: 600; }
 .tier-head h2 { margin-bottom: 6px; }
 .tier-blurb { color: var(--muted); margin: 0; max-width: 560px; }
 
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .grid-feature { grid-template-columns: 1fr; }
 
 .card {
@@ -267,6 +267,51 @@ strong { color: var(--ink); font-weight: 600; }
 .planned li { display: flex; gap: 16px; align-items: baseline; padding: 11px 0 11px 20px; border-top: 1px solid var(--line); }
 .planned li .era { width: 150px; flex: none; }
 .planned-title { color: var(--ink-2); }
+
+/* Optional warm-up row under Tier 1 */
+.starter-row { display: flex; align-items: center; gap: 16px; margin-top: 16px; padding: 16px 20px; border: 1px dashed var(--line-strong); border-radius: var(--radius); color: var(--muted); }
+.starter-text { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.starter-text strong { font-weight: 500; }
+.starter-text .muted { font-size: 0.875rem; }
+
+/* ── Commit sheet: dim to focus; the sheet materialises rather than just fading ── */
+.sheet-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(20, 20, 18, 0.38);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: fade 220ms ease-out both;
+}
+.sheet {
+  width: 100%;
+  max-width: 560px;
+  max-height: calc(100vh - 40px);
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.14);
+  animation: sheet-in 380ms var(--ease-out) both;
+}
+.sheet h2 { font-size: 2rem; letter-spacing: -0.025em; margin: 6px 0 10px; }
+.sheet-tagline { color: var(--muted); font-size: 1.05rem; line-height: 1.55; }
+.sheet-lessons { list-style: none; padding: 0; margin: 8px 0 20px; border-top: 1px solid var(--line); }
+.sheet-lessons li { display: flex; align-items: center; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--line); color: var(--ink); }
+.sheet-lessons li .mono { color: var(--muted); }
+.sheet-lessons li > span:nth-child(2) { flex: 1; }
+.sheet-lessons li.upcoming { color: var(--muted); }
+.sheet-rule { display: flex; gap: 12px; padding: 14px 16px; border-radius: 10px; background: var(--yellow-bg); color: var(--yellow); }
+.sheet-rule .icon { margin-top: 3px; }
+.sheet-rule p { margin: 0; color: var(--ink-2); font-size: 0.95rem; }
+.sheet-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes sheet-in { from { opacity: 0; transform: translateY(16px) scale(0.98); } to { opacity: 1; transform: none; } }
 
 /* ── Track page ─────────────────────────────────────────────────────────── */
 .back { display: inline-flex; align-items: center; gap: 6px; margin: 32px 0 20px; color: var(--muted); text-decoration: none; font-size: 0.9rem; transition: color 150ms; }
@@ -474,7 +519,8 @@ input[type='range'] { width: 100%; accent-color: var(--ink); height: 28px; }
 
 /* ── Small screens ──────────────────────────────────────────────────────── */
 @media (max-width: 640px) {
-  .container { padding: 0 16px 96px; }
+  .container { padding: 32px 16px 96px; }
+  .grid { grid-template-columns: 1fr; }
   .topbar-inner { padding: 10px 16px; }
   .stat-label { display: none; }
   .stat { padding: 6px 7px; }
@@ -485,6 +531,11 @@ input[type='range'] { width: 100%; accent-color: var(--ink); height: 28px; }
   .planned li { flex-direction: column; gap: 2px; }
   .review-banner { flex-wrap: wrap; margin-bottom: 48px; }
   .map-label { font-size: 22px; }
+  .sheet-scrim { place-items: end center; padding: 0; }
+  .sheet { border-radius: 16px 16px 0 0; padding: 24px 20px 28px; max-height: 88vh; }
+  .sheet-actions { flex-direction: column-reverse; }
+  .sheet-actions .btn { width: 100%; }
+  .starter-row { flex-wrap: wrap; }
 }
 
 /* ── Accessibility preferences ──────────────────────────────────────────── */

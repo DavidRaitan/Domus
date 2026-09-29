@@ -151,10 +151,10 @@ describe('free tracks and explicit continuations', () => {
 })
 
 describe('partly written tracks', () => {
-  it('does not complete a track while lessons are still upcoming', () => {
+  it('counts a track as finished once every written lesson is done, even with more planned', () => {
     const partial = { ...track('partial', 'partial', 1, [lesson('a')]), upcoming: [{ title: 'b', summary: '' }] }
     const r = completeLesson(unlockTrack(initialProgress(), partial, [partial]), partial, 'a', 0, '2026-09-29')
-    expect(r.trackCompleted).toBe(false)
-    expect(r.progress.keys).toBe(0)
+    expect(r.trackCompleted).toBe(true)
+    expect(r.progress.keys).toBe(1)
   })
 })

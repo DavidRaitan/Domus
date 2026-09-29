@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { catalog } from '../content/catalog'
 import type { Track } from '../content/types'
 import { isLessonOpen, lessonKey, trackStatus, type Progress } from '../engine/progression'
@@ -5,15 +6,23 @@ import { href, navigate } from '../router'
 import { statusLabel } from './Home'
 import { Lenses } from './Lenses'
 import { Icon } from './Icon'
+import { CommitSheet } from './CommitSheet'
 
 type Props = { track: Track; progress: Progress; onUnlock: (t: Track) => void }
 
 export function TrackPage({ track, progress, onUnlock }: Props) {
   const status = trackStatus(track, progress, catalog)
   const open = status.kind === 'unlocked' || status.kind === 'completed'
+  const [asking, setAsking] = useState(false)
+  const start = () => {
+    onUnlock(track)
+    setAsking(false)
+    navigate({ page: 'track', trackId: track.id })
+  }
 
   return (
     <>
+      {asking && <CommitSheet track={track} keys={progress.keys} onCancel={() => setAsking(false)} onConfirm={start} />}
       <a className="back" href={href({ page: 'home' })}>
         <Icon name="back" size={16} /> All stories
       </a>
@@ -28,10 +37,7 @@ export function TrackPage({ track, progress, onUnlock }: Props) {
             {status.kind === 'available' ? (
               <button
                 className="btn btn-sm"
-                onClick={() => {
-                  onUnlock(track)
-                  navigate({ page: 'track', trackId: track.id })
-                }}
+                onClick={() => (progress.pro || track.free ? start() : setAsking(true))}
               >
                 {progress.pro || track.free ? 'Start track' : 'Unlock with a key'}
               </button>

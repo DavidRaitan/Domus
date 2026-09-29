@@ -108,7 +108,6 @@ export function completeLesson(
 
   const trackCompleted =
     !p.completedTracks.includes(track.id) &&
-    !track.upcoming?.length &&
     track.lessons.every((l) => completedLessons.includes(lessonKey(track.id, l.id)))
   if (trackCompleted) xpEarned += XP.track
 
