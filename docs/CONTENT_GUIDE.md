@@ -58,3 +58,13 @@ Cards from completed lessons come back on an SM-2-style schedule (`src/engine/re
 - Review gaps are roughly 1 → 3 → 8 → 20 → 50 days.
 - A forgotten card returns the next day, then resumes from 20% of its old gap.
 - Sessions are capped at 20 cards, and cards from different tracks are mixed together.
+
+## Close-up maps
+
+Continent-scale maps use the world's 1:50m coastline. A close-up (a strait, a pass, a harbour) needs a detailed regional outline, or small islands and channels disappear. To add a new region:
+
+```bash
+node scripts/extract-land.mjs <name> <west> <south> <east> <north>
+```
+
+Then register it in `REGIONS` in `src/components/widgets/GeoMap.tsx`. Any `mapBounds` narrower than 12° that fits inside that region's box will use it automatically. The Aegean (`aegean`) is already included, and covers Salamis, Thermopylae and Athens.
