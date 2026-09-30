@@ -139,13 +139,13 @@ strong { color: var(--ink); font-weight: 600; }
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid var(--line);
 }
-.topbar-inner { max-width: calc(var(--page) + 2 * var(--gutter)); margin: 0 auto; padding: 12px var(--gutter); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.brand { font-family: var(--serif); font-size: 1.45rem; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
+.topbar-inner { max-width: calc(var(--page) + 2 * var(--gutter)); margin: 0 auto; padding: 20px var(--gutter); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.brand { font-family: var(--serif); font-size: 2rem; font-weight: 600; letter-spacing: 0.035em; line-height: 1; color: var(--ink); text-decoration: none; }
 .stats { display: flex; align-items: center; gap: 4px; }
-.stat { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: var(--radius-sm); color: var(--muted); font-size: 0.875rem; }
+.stat { display: inline-flex; align-items: center; gap: 7px; padding: 7px 12px; border-radius: var(--radius-sm); color: var(--muted); font-size: 0.975rem; }
 .stat-num { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
 .stat-live .icon { color: #d9772b; }
-.icon-btn { display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: var(--radius-sm); color: var(--muted); transition: background 150ms, color 150ms; }
+.icon-btn { display: inline-grid; place-items: center; width: 42px; height: 42px; border-radius: var(--radius-sm); color: var(--muted); transition: background 150ms, color 150ms; }
 .icon-btn:hover { background: var(--surface-2); color: var(--ink); }
 
 /* ── Buttons: instant feedback on press ─────────────────────────────────── */
@@ -545,7 +545,8 @@ input[type='range'] { width: 100%; accent-color: var(--ink); height: 28px; }
 @media (max-width: 640px) {
   .container { padding: 32px var(--gutter) 96px; }
   .grid { grid-template-columns: 1fr; }
-  .topbar-inner { padding: 10px var(--gutter); }
+  .topbar-inner { padding: 14px var(--gutter); }
+  .brand { font-size: 1.6rem; }
   .stat-label { display: none; }
   .stat { padding: 6px 7px; }
   .hero { padding: 48px 0 36px; }
